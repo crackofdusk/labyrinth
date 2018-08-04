@@ -4,14 +4,18 @@ import Html exposing (Html, text)
 import Html.Attributes
 import Svg exposing (Svg)
 import Svg.Attributes
+import Random exposing (Generator)
 import Grid exposing (grid)
+import Orientation exposing (Orientation)
 
 
 -- MODEL
 
 
 type alias Model =
-    { size : Int }
+    { size : Int
+    , orientations : List Orientation
+    }
 
 
 type alias Point =
@@ -24,8 +28,10 @@ type alias Segment =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { size = 15 }
-    , Cmd.none
+    ( { size = 15
+      , orientations = []
+      }
+    , Random.generate OrientationsGenerated (orientationsGenerator (15 * 15))
     )
 
 
@@ -39,12 +45,19 @@ segments n =
 
 
 type Msg
-    = Noop
+    = OrientationsGenerated (List Orientation)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
-    ( model, Cmd.none )
+    case message of
+        OrientationsGenerated orientations ->
+            ( { model | orientations = orientations }, Cmd.none )
+
+
+orientationsGenerator : Int -> Generator (List Orientation)
+orientationsGenerator n =
+    Random.list n Orientation.generator
 
 
 
@@ -53,10 +66,11 @@ update message model =
 
 view : Model -> Html msg
 view model =
-    List.map2
+    List.map3
         placeSegment
         (grid model.size)
         (segments (model.size * model.size))
+        (model.orientations)
         |> canvas ((toFloat model.size) * scale)
         |> container
 
@@ -66,11 +80,22 @@ scale =
     50.0
 
 
-placeSegment : ( Int, Int ) -> Segment -> Svg msg
-placeSegment ( x, y ) segment =
+placeSegment : ( Int, Int ) -> Segment -> Orientation -> Svg msg
+placeSegment ( x, y ) segment orientation =
     Svg.g
         [ Svg.Attributes.transform
-            ("scale(" ++ toString scale ++ ")" ++ " translate(" ++ toString x ++ "," ++ toString y ++ ")")
+            ("scale("
+                ++ toString scale
+                ++ ")"
+                ++ " translate("
+                ++ toString x
+                ++ ","
+                ++ toString y
+                ++ ")"
+                ++ " rotate("
+                ++ toString (Orientation.toAngle orientation)
+                ++ ")"
+            )
         , Svg.Attributes.strokeWidth <| (toString (2 / scale)) ++ "px"
         ]
         [ viewSegment segment ]
