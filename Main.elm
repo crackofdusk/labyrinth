@@ -1,12 +1,14 @@
-module Main exposing (..)
+module Main exposing (Model, Msg(..), Point, Segment, canvas, container, init, main, orientationsGenerator, placeSegment, scale, segments, update, view, viewSegment)
 
+import Browser
+import Grid exposing (grid)
 import Html exposing (Html, text)
 import Html.Attributes
+import Orientation exposing (Orientation)
+import Random exposing (Generator)
 import Svg exposing (Svg)
 import Svg.Attributes
-import Random exposing (Generator)
-import Grid exposing (grid)
-import Orientation exposing (Orientation)
+
 
 
 -- MODEL
@@ -26,8 +28,8 @@ type alias Segment =
     { start : Point, end : Point }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : () -> ( Model, Cmd Msg )
+init _ =
     ( { size = 15
       , orientations = []
       }
@@ -37,7 +39,7 @@ init =
 
 segments : Int -> List Segment
 segments n =
-    List.repeat n ({ start = Point -0.5 -0.5, end = Point 0.5 0.5 })
+    List.repeat n { start = Point -0.5 -0.5, end = Point 0.5 0.5 }
 
 
 
@@ -70,8 +72,8 @@ view model =
         placeSegment
         (grid model.size)
         (segments (model.size * model.size))
-        (model.orientations)
-        |> canvas ((toFloat model.size) * scale)
+        model.orientations
+        |> canvas (toFloat model.size * scale)
         |> container
 
 
@@ -85,18 +87,18 @@ placeSegment ( x, y ) segment orientation =
     Svg.g
         [ Svg.Attributes.transform
             ("scale("
-                ++ toString scale
+                ++ String.fromFloat scale
                 ++ ")"
                 ++ " translate("
-                ++ toString x
+                ++ String.fromInt x
                 ++ ","
-                ++ toString y
+                ++ String.fromInt y
                 ++ ")"
                 ++ " rotate("
-                ++ toString (Orientation.toAngle orientation)
+                ++ String.fromInt (Orientation.toAngle orientation)
                 ++ ")"
             )
-        , Svg.Attributes.strokeWidth <| (toString (2 / scale)) ++ "px"
+        , Svg.Attributes.strokeWidth <| String.fromFloat (2 / scale) ++ "px"
         ]
         [ viewSegment segment ]
 
@@ -104,10 +106,10 @@ placeSegment ( x, y ) segment orientation =
 viewSegment : Segment -> Html msg
 viewSegment segment =
     Svg.line
-        [ Svg.Attributes.x1 (toString segment.start.x)
-        , Svg.Attributes.x2 (toString segment.end.x)
-        , Svg.Attributes.y1 (toString segment.start.y)
-        , Svg.Attributes.y2 (toString segment.end.y)
+        [ Svg.Attributes.x1 (String.fromFloat segment.start.x)
+        , Svg.Attributes.x2 (String.fromFloat segment.end.x)
+        , Svg.Attributes.y1 (String.fromFloat segment.start.y)
+        , Svg.Attributes.y2 (String.fromFloat segment.end.y)
         , Svg.Attributes.stroke "black"
         ]
         []
@@ -116,12 +118,10 @@ viewSegment segment =
 container : Html msg -> Html msg
 container element =
     Html.div
-        [ Html.Attributes.style
-            [ ( "display", "flex" )
-            , ( "justify-content", "center" )
-            , ( "align-items", "center" )
-            , ( "height", "100%" )
-            ]
+        [ Html.Attributes.style "display" "flex"
+        , Html.Attributes.style "justify-content" "center"
+        , Html.Attributes.style "align-items" "center"
+        , Html.Attributes.style "height" "100%"
         ]
         [ element ]
 
@@ -129,9 +129,9 @@ container element =
 canvas : Float -> List (Svg msg) -> Svg msg
 canvas size elements =
     Svg.svg
-        [ Svg.Attributes.viewBox ("0 0 " ++ toString size ++ " " ++ toString size)
-        , Svg.Attributes.width (toString size)
-        , Svg.Attributes.height (toString size)
+        [ Svg.Attributes.viewBox ("0 0 " ++ String.fromFloat size ++ " " ++ String.fromFloat size)
+        , Svg.Attributes.width (String.fromFloat size)
+        , Svg.Attributes.height (String.fromFloat size)
         ]
         elements
 
@@ -140,9 +140,9 @@ canvas size elements =
 -- MAIN
 
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    Html.program
+    Browser.element
         { init = init
         , view = view
         , update = update

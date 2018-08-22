@@ -1,9 +1,9 @@
-module GridTests exposing (..)
+module GridTests exposing (suite)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import Test exposing (..)
 import Grid exposing (grid)
+import Test exposing (..)
 
 
 suite : Test
