@@ -1,3 +1,5 @@
+![Program output preview](random-grid.png)
+
 # Notes
 
 * Unit segments are positioned on a grid
