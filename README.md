@@ -3,7 +3,7 @@
 # Notes
 
 * Unit segments are positioned on a grid
-* They are rotated in one of two configuration
+* They are rotated in one of two configurations
 * They are scaled up
 
 SVG does the heavy-lifting of transformations (translation, rotation, scaling).
