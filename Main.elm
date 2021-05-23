@@ -121,7 +121,7 @@ container element =
         [ Html.Attributes.style "display" "flex"
         , Html.Attributes.style "justify-content" "center"
         , Html.Attributes.style "align-items" "center"
-        , Html.Attributes.style "height" "100%"
+        , Html.Attributes.style "height" "100vh"
         ]
         [ element ]
 
