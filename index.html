@@ -5164,7 +5164,7 @@ var $elm$core$Task$perform = F2(
 		return $elm$core$Task$command(
 			A2($elm$core$Task$map, toMessage, task));
 	});
-var $elm$browser$Browser$element = _Browser_element;
+var $elm$browser$Browser$document = _Browser_document;
 var $author$project$Main$OrientationsGenerated = $elm$core$Basics$identity;
 var $elm$random$Random$Generate = $elm$core$Basics$identity;
 var $elm$random$Random$Seed = F2(
@@ -5406,6 +5406,7 @@ var $author$project$Main$update = F2(
 				{Q: orientations}),
 			$elm$core$Platform$Cmd$none);
 	});
+var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
@@ -5443,6 +5444,7 @@ var $author$project$Main$container = function (element) {
 		_List_fromArray(
 			[element]));
 };
+var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5471,6 +5473,20 @@ var $author$project$Grid$grid = function (width) {
 				A2($elm$core$List$range, 0, width - 1));
 		},
 		A2($elm$core$List$range, 0, width - 1));
+};
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
 };
 var $elm$core$List$map3 = _List_map3;
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
@@ -5560,19 +5576,57 @@ var $author$project$Main$segments = function (n) {
 			T: A2($author$project$Main$Point, -0.5, -0.5)
 		});
 };
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$view = function (model) {
-	return $author$project$Main$container(
-		A2(
-			$author$project$Main$canvas,
-			model.B * $author$project$Main$scale,
-			A4(
-				$elm$core$List$map3,
-				$author$project$Main$placeSegment,
-				$author$project$Grid$grid(model.B),
-				$author$project$Main$segments(model.B * model.B),
-				model.Q)));
+	return {
+		aC: _List_fromArray(
+			[
+				$author$project$Main$container(
+				A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'padding', '2rem')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$author$project$Main$canvas,
+							model.B * $author$project$Main$scale,
+							A4(
+								$elm$core$List$map3,
+								$author$project$Main$placeSegment,
+								$author$project$Grid$grid(model.B),
+								$author$project$Main$segments(model.B * model.B),
+								model.Q)),
+							A2(
+							$elm$html$Html$footer,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$style, 'padding', '2rem'),
+									A2($elm$html$Html$Attributes$style, 'text-align', 'center')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$a,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$href('https://github.com/crackofdusk/labyrinth'),
+											A2($elm$html$Html$Attributes$style, 'font-family', 'monospace')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Source code')
+										]))
+								]))
+						])))
+			]),
+		aS: 'Labyrinth'
+	};
 };
-var $author$project$Main$main = $elm$browser$Browser$element(
+var $author$project$Main$main = $elm$browser$Browser$document(
 	{
 		aK: $author$project$Main$init,
 		aR: function (_v0) {
