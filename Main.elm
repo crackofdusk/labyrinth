@@ -66,15 +66,19 @@ orientationsGenerator n =
 -- VIEW
 
 
-view : Model -> Html msg
+view : Model -> Browser.Document msg
 view model =
-    List.map3
-        placeSegment
-        (grid model.size)
-        (segments (model.size * model.size))
-        model.orientations
-        |> canvas (toFloat model.size * scale)
-        |> container
+    { title = "Labyrinth"
+    , body =
+        [ List.map3
+            placeSegment
+            (grid model.size)
+            (segments (model.size * model.size))
+            model.orientations
+            |> canvas (toFloat model.size * scale)
+            |> container
+        ]
+    }
 
 
 scale : Float
@@ -142,7 +146,7 @@ canvas size elements =
 
 main : Program () Model Msg
 main =
-    Browser.element
+    Browser.document
         { init = init
         , view = view
         , update = update
