@@ -1,6 +1,12 @@
+# Labyrinth
+
+My first attempt at generative art.
+
+[Demo](https://crackofdusk.github.io/labyrinth/)
+
 ![Program output preview](random-grid.png)
 
-# Notes
+## Notes
 
 * Unit segments are positioned on a grid
 * They are rotated in one of two configurations
