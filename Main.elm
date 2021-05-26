@@ -70,12 +70,24 @@ view : Model -> Browser.Document msg
 view model =
     { title = "Labyrinth"
     , body =
-        [ List.map3
-            placeSegment
-            (grid model.size)
-            (segments (model.size * model.size))
-            model.orientations
-            |> canvas (toFloat model.size * scale)
+        [ Html.div [ Html.Attributes.style "padding" "2rem" ]
+            [ List.map3
+                placeSegment
+                (grid model.size)
+                (segments (model.size * model.size))
+                model.orientations
+                |> canvas (toFloat model.size * scale)
+            , Html.footer
+                [ Html.Attributes.style "padding" "2rem"
+                , Html.Attributes.style "text-align" "center"
+                ]
+                [ Html.a
+                    [ Html.Attributes.href "https://github.com/crackofdusk/labyrinth"
+                    , Html.Attributes.style "font-family" "monospace"
+                    ]
+                    [ Html.text "Source code" ]
+                ]
+            ]
             |> container
         ]
     }
