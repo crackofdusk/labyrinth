@@ -23,3 +23,15 @@ Initially I thought I could somehow create segments from the grid coordinates. T
 * Make grid height and width distinct. I like how the square grid looks, though.
 * Add in-page controls for adjusting the parameters (grid size, scale, line width, etc.)
 * Play with colours. Try gradients. Try a random colour per segment.
+
+## Development
+
+Install [elm](https://elm-lang.org/).
+
+Start the elm reactor:
+
+```
+elm reactor
+```
+
+Open <http://localhost:8000/Main.elm>.
